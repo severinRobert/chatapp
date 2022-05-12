@@ -15,22 +15,23 @@ const io = socketIO(server, {
   }
 });
 
-clientsList = {};
+clients = {};
 
 io.on("connection", socket => {
   console.log("Client connected " + socket.id);
   socket.user_id = socket.handshake.query.userId;
-  clientsList[socket.handshake.query.userId] = socket;
+  clients[socket.handshake.query.userId] = socket;
 
   socket.on("disconnect", () => {
-    delete clientsList[socket.user_id];
+    delete clients[socket.user_id];
     console.log("Client disconnected: " + socket.id);
   });
 
   socket.on("chat message", (data) => {
+    console.log(data)
     socket.broadcast.emit('new message', {
-      username: socket.username,
-      message: data
+      username: data.username,
+      message: data.message
     });
   });
 });

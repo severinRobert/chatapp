@@ -4,9 +4,11 @@ import { Link } from "react-router-dom";
 function Home() {
 
   return (
-    <Link to="/chat">
-      Chat
-    </Link>
+    <div className="container">
+      <Link className="button" to="/chat">
+        Chat
+      </Link>
+    </div>
   );
 
 }

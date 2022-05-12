@@ -1,0 +1,24 @@
+body {
+    background-color: #fceaff;
+}
+
+.container {
+    width: 100vw;
+}
+
+.button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    text-decoration: none;
+    color: #4b00c8;
+    background-color: #ffbb3e;
+    padding: 1rem 2rem;
+    width: 20vw;
+    border-radius: 5rem;
+}
+
+.button:hover {
+    background-color: #ff7145;
+}
