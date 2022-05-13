@@ -22,7 +22,11 @@ io.on("connection", socket => {
   socket.user_id = socket.handshake.query.userId;
   clients[socket.handshake.query.userId] = socket;
 
+  socket.broadcast.emit("connection")
+
   socket.on("disconnect", () => {
+    socket.broadcast.emit("disconnection")
+
     delete clients[socket.user_id];
     console.log("Client disconnected: " + socket.id);
   });

@@ -8,6 +8,7 @@ function Chat() {
   const [loggedIn, setLoggedIn] = useState(false)
   const [username, setUsername] = useState("")
   const [messages, setMessages] = useState([])
+  const [infos, setInfos] = useState([])
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
@@ -41,14 +42,33 @@ function Chat() {
       console.log("quand message reçu : ",messages)
       console.log(`message received from ${data.username} : ${data.message}`)
     })
+    newSocket.on('connection', () => {
+      setInfos((prevInfo) => {
+        let newInfo = [...prevInfo]
+        newInfo.push("Nouvel arrivant")
+        return newInfo
+      })
+    })
+    newSocket.on('disconnection', () => {
+      setInfos((prevInfo) => {
+        let newInfo = [...prevInfo]
+        newInfo.push("Quelqu'un est parti")
+        return newInfo
+      })
+    })
     console.log(`user ${username} logged in`)
     return () => newSocket.disconnect();
   }
 
+  const handleQuit = () => {
+    socket.disconnect()
+    setLoggedIn(false)
+  }
 
   return (
     <div>
       {loggedIn &&
+      <div id="loginContainer">
         <div id="chatContainer">
           <ul id="messages">{
             messages.map(({message, username}, id) => <li key={id}>{username} : {message}</li>)
@@ -57,6 +77,13 @@ function Chat() {
             <input id="message"  autoComplete="off" /><button>Send</button>
           </form>
         </div>
+        <div>
+          <button onClick={handleQuit}>Quit</button>
+          <ul id="info">{
+            infos.map((infos, id) => <li key={id}>{infos}</li>)
+          }</ul>
+        </div>
+      </div>
       }
       {!loggedIn &&
         <form id="chatContainer" onSubmit={handleConnection}>
